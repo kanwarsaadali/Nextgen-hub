@@ -1,0 +1,74 @@
+# Default values for hello-world-chart.
+replicaCount: 1
+
+# Define the Docker image for the web server
+image:
+  repository: kanwarsaad/hello-world  # Replace with your Docker Hub repo
+  pullPolicy: IfNotPresent
+  tag: "1"  # Ensure the tag is correct
+
+# Image Pull Secrets (if using a private repo)
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+# Namespace configuration
+namespace: testns  # Define the namespace for deployment
+
+# Service account settings
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
+
+# Pod metadata
+podAnnotations: {}
+podLabels: {}
+
+# Security settings
+podSecurityContext: {}
+securityContext: {}
+
+# Service configuration
+service:
+  type: LoadBalancer  # Change from ClusterIP to LoadBalancer
+  port: 80
+
+# Ingress settings
+ingress:
+  enabled: true  # Enable Ingress
+  className: "nginx"  # Use Nginx as the Ingress controller
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  hosts:
+    - host: ""  # Removing host to use LoadBalancer IP
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+# Resource limits (optional, recommended for production)
+resources: {}
+
+# Health checks
+livenessProbe:
+  httpGet:
+    path: /
+    port: 80
+readinessProbe:
+  httpGet:
+    path: /
+    port: 80
+
+# Autoscaling (disabled by default)
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
+
+# Additional configurations
+nodeSelector: {}
+tolerations: []
+affinity: {}
